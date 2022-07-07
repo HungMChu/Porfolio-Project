@@ -22,14 +22,14 @@ SELECT gen.country as Country,
   gen.gdp / gen.population as GDPPerCapita
 FROM continents2 as regions
 INNER JOIN EnergyGeneration as gen
-  ON regions.[alpha-3] = gen.iso_code
+    ON regions.[alpha-3] = gen.iso_code
 INNER JOIN EnergyConsumption as cons
-  ON gen.iso_code = cons.iso_code
-  AND gen.year = cons.year
+    ON gen.iso_code = cons.iso_code
+    AND gen.year = cons.year
 WHERE LEN(gen.iso_code) = 3
-  AND gen.year = 2018
-  AND ISNULL(cast(cons.electricity_demand as float),0) <> 0
-  AND ISNULL(cast(gen.gdp as float),0) <> 0
+    AND gen.year = 2018
+    AND ISNULL(cast(cons.electricity_demand as float),0) <> 0
+    AND ISNULL(cast(gen.gdp as float),0) <> 0
 ORDER BY 1
 
 -- 2. Amount of GHS emission per unit electricty generated in each country from 2001 to 2020 
@@ -37,9 +37,9 @@ SELECT country as Country, year as Year,
   greenhouse_gas_emissions / cast(electricity_generation as float)*1000 as EmissionPerUnitEnergy
 FROM EnergyGeneration
 WHERE LEN(iso_code) = 3
-  AND year >= 2001
-  AND year <= 2020
-  AND ISNULL(cast(electricity_generation as float), 0) <> 0 
+    AND year >= 2001
+    AND year <= 2020
+    AND ISNULL(cast(electricity_generation as float), 0) <> 0 
 ORDER BY 1,2
 
 -- 3. Top electricity export countries in terms of absolute amount in a certain yaer
@@ -50,10 +50,10 @@ SELECT TOP(10) gen.country as Country,
   cast(gen.electricity_generation as float) - cast(con.electricity_demand as float) as ExportAmount
 FROM EnergyGeneration as gen
 INNER JOIN EnergyConsumption as con
-  ON gen.country = con.country
-  AND gen.year = con.year
+    ON gen.country = con.country
+    AND gen.year = con.year
 WHERE LEN(gen.iso_code) = 3
-  AND gen.year = @year
+    AND gen.year = @year
 ORDER BY 2 DESC
 
 EXEC TopExporter @year = 2020
@@ -65,14 +65,14 @@ SELECT gen.country, conti.region, gen.year,
   cast(gen.electricity_generation as numeric) / cast(cons.electricity_demand as numeric) 
 FROM continents2 as conti
 INNER JOIN EnergyGeneration as gen
-  ON conti.[alpha-3] = gen.iso_code
+    ON conti.[alpha-3] = gen.iso_code
 INNER JOIN EnergyConsumption as cons
-  ON gen.country = cons.country
-  AND gen.year = cons.year
+    ON gen.country = cons.country
+    AND gen.year = cons.year
 WHERE LEN(gen.iso_code) = 3
-  AND gen.year >= 2001
-  AND gen.year <= 2020
-  AND ISNULL(cast(cons.electricity_demand as numeric), 0) <> 0 
+    AND gen.year >= 2001
+    AND gen.year <= 2020
+    AND ISNULL(cast(cons.electricity_demand as numeric), 0) <> 0 
 )
 SELECT Year, Continent, COUNT(Country) as NumberOfCountries
 FROM export10
@@ -87,8 +87,8 @@ SELECT conti.region as Continent,
   SUM(cast(gen.renewables_electricity as numeric)) as RenewElec
 FROM continents2 as conti
 INNER JOIN EnergyGeneration as gen
-  ON conti.[alpha-3] = gen.iso_code
+    ON conti.[alpha-3] = gen.iso_code
 WHERE LEN(gen.iso_code) = 3
-  AND gen.year = 2020
+    AND gen.year = 2020
 GROUP BY conti.region
 ORDER BY 1
