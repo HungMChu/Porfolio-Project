@@ -1,5 +1,5 @@
 /*
-This is my SQL data exploration project on the OurWorldInData Energy dataset.
+This is my short SQL data exploration project on the OurWorldInData Energy dataset.
 I also created a Tableau Public dashboard using part of the data queried from the codes below.
 The dashboard is available at the below URL:
 https://public.tableau.com/views/ElectricityDashboard_16556440960280/Dashboard1?:language=en-US&:display_count=n&:origin=viz_share_link&:device=desktop
